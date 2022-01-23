@@ -12,25 +12,25 @@
           <div class="input__container">
             <mat-form-field appearance="standard" class="form__input">
               <mat-label>Longitude</mat-label>
-              <input matInput type="number" formControlName="longitude" placeholder="Longitude" [(ngModel)]="longitude" step="any">
+              <input matInput type="number" formControlName="longitude" placeholder="Longitude" step="any">
               <mat-hint align="start">Value between <strong>-180</strong> and <strong>180</strong></mat-hint>
+              <mat-error *ngIf="weatherForm.get('longitude')?.touched && weatherForm.get('longitude')?.hasError('required')">This field is required.</mat-error>
+              <mat-error *ngIf="weatherForm.get('longitude')?.touched && (weatherForm.get('longitude')?.hasError('min') || weatherForm.get('longitude')?.hasError('max'))">Value is not in required range.</mat-error>
             </mat-form-field>
             <mat-form-field appearance="standard" class="form__input">
               <mat-label>Latitude</mat-label>
-              <input matInput type="number" formControlName="latitude" placeholder="Latitude" [(ngModel)]="latitude" step="any">
+              <input matInput type="number" formControlName="latitude" placeholder="Latitude" step="any">
               <mat-hint align="start">Value between <strong>-90</strong> and <strong>90</strong></mat-hint>
             </mat-form-field>
           </div>
-          <button mat-raised-button color="primary" class="form__button" (click)="getWeatherForecast(latitude, longitude)">Check forecast</button>
+          <button mat-raised-button color="primary" class="form__button" (click)="getWeatherForecast()">Check forecast</button>
         </form>
       </div>
       <div class="main__right">
         <div class="forecast">
-          <div class="mat-elevation-z8 table__container">
+          <mat-spinner [hidden]="!isLoading"></mat-spinner>
+          <div class="mat-elevation-z8 table__container" *ngIf="dataSource">
             <div class="table__wrapper">
-              <div class="spinner__container" *ngIf="isLoading">
-                <mat-spinner ></mat-spinner>
-              </div>
               <table mat-table [dataSource]="dataSource" matSort>
                 <ng-container matColumnDef="time" position>
                   <th mat-header-cell *matHeaderCellDef mat-sort-header="time">Time</th>
@@ -47,11 +47,12 @@
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
                 <tr mat-row *matRowDef="let rowData;let even = even;columns: displayedColumns" [ngClass]="{gray: even}"></tr>
               </table>
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                             showFirstLastButtons
+                             class="table__paginator"
+                             aria-label="Select page of periodic elements">
+              </mat-paginator>
             </div>
-            <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                           showFirstLastButtons
-                           aria-label="Select page of periodic elements">
-            </mat-paginator>
           </div>
         </div>
       </div>

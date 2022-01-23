@@ -12,10 +12,24 @@ html, body {
 }
 
 .mat-cell {
+  border: 1px solid #000;
   text-align: center;
   justify-content:center;
 }
 
 table {
   border-collapse: collapse;
+  overflow: hidden;
+}
+
+th.mat-header-cell:first-of-type, td.mat-cell:first-of-type, td.mat-footer-cell:first-of-type {
+  padding-left: 0 !important;
+}
+
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+  padding-right: 0 !important;
+}
+
+td, th {
+  width: 200px;
 }

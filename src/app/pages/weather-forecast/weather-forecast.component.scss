@@ -27,7 +27,7 @@
 
 .main__right {
   width: 100%;
-  max-width: 680px;
+  max-width: 800px;
 }
 
 .input__container {
@@ -71,7 +71,6 @@ table {
 
 .table__container {
   width: 100%;
-  height: 360px;
   overflow: auto;
 }
 
@@ -112,6 +111,12 @@ td {
 .mat-column-relative_humidity {
   flex: 0 0 33% !important;
   text-align: center;
+}
+
+.table__paginator {
+  position: relative;
+  bottom: 0;
+  right: 0;
 }
 
 
