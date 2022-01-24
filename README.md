@@ -4,7 +4,7 @@ You can view the full assignment [HERE](github/agdir-homework.pdf)
 
 You can see a working project here - https://objective-davinci-a0de0e.netlify.app
 
-![Project GIF](github/agdir-demonstration.gif)
+![Project GIF](https://github.com/GFJankavs/AGdir-Angular/blob/main/github/agdir_demonstration.gif)
 
 ## Development server
 
