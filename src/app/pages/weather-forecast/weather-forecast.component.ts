@@ -1,12 +1,12 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { GeolocationService } from '@ng-web-apis/geolocation';
-import { MatTableDataSource } from "@angular/material/table";
-import WeatherJSON, { Weather, WeatherDataType } from "../../../interfaces";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Subscription, take } from 'rxjs';
-import { WeatherService } from "./weather.service";
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {GeolocationService} from '@ng-web-apis/geolocation';
+import {MatTableDataSource} from "@angular/material/table";
+import {Weather, WeatherDataType} from "../../../interfaces";
+import {MatPaginator} from "@angular/material/paginator";
+import {MatSort} from "@angular/material/sort";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {Subscription, take} from 'rxjs';
+import {WeatherService} from "./weather.service";
 
 @Component({
   selector: 'app-weather-forecast',
@@ -15,16 +15,14 @@ import { WeatherService } from "./weather.service";
 })
 export class WeatherForecastComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator, { static: false })
+  @ViewChild(MatPaginator, {static: false})
   set paginator(value: MatPaginator) {
     if (this.dataSource) {
       this.dataSource.paginator = value;
     }
   }
 
-  dataSource: MatTableDataSource<WeatherDataType>
-  timestamp: string;
-  coordinates: any;
+  dataSource: MatTableDataSource<WeatherDataType>;
   weatherSubscription: Subscription;
   locationSubscription: Subscription;
   isLoading: boolean = false;
@@ -47,7 +45,9 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
   constructor(
     private readonly geolocationService: GeolocationService,
     private weatherService: WeatherService
-  ) {}
+  ) {
+    this.dataSource = new MatTableDataSource<WeatherDataType>([]);
+  }
 
   ngOnInit(): void {
     this.getLocation();
@@ -60,7 +60,7 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
 
   getLocation(): void {
     this.locationSubscription = this.geolocationService.pipe(take(1)).subscribe((pos) => {
-      if(pos) {
+      if (pos) {
         console.log(pos);
         this.weatherForm.patchValue({
           longitude: pos.coords.longitude.toString(),
@@ -71,34 +71,33 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
   }
 
   getWeatherForecast(): void {
-    this.isLoading = true;
-    const lat = this.weatherForm.value.latitude;
-    const lon = this.weatherForm.value.longitude;
+    if (this.weatherForm.value.latitude && this.weatherForm.value.longitude) {
+      if (this.weatherForm.get('longitude')?.hasError === undefined) {
+        console.log('There is an error');
+      }
+      this.isLoading = true;
+      const lat = this.weatherForm.value.latitude;
+      const lon = this.weatherForm.value.longitude;
 
-    setTimeout(() => {
-      this.weatherSubscription = this.weatherService.getWeatherForecast(lat, lon).subscribe((res) => {
-        this.timestamp = res.properties.meta.updated_at;
-        this.coordinates = {
-          lat: res.geometry.coordinates[0].toString(),
-          lon: res.geometry.coordinates[1].toString(),
-        };
+      setTimeout(() => {
+        this.weatherSubscription = this.weatherService.getWeatherForecast(lat, lon).subscribe((res) => {
 
-        const weatherData: WeatherDataType[] = [];
+          const weatherData: WeatherDataType[] = [];
 
-        res.properties.timeseries.map((weather) => {
-          weatherData.push({
-            time: weather.time,
-            air_temperature: weather.data.instant.details.air_temperature.toString(),
-            relative_humidity: weather.data.instant.details.relative_humidity.toString()
+          res.properties.timeseries.map((weather: Weather) => {
+            weatherData.push({
+              time: weather.time,
+              air_temperature: weather.data.instant.details.air_temperature.toString(),
+              relative_humidity: weather.data.instant.details.relative_humidity.toString()
+            })
           })
-        })
 
-        this.dataSource = new MatTableDataSource<WeatherDataType>(weatherData);
-        this.dataSource.sort = this.sort;
+          this.dataSource.data = weatherData;
+          this.dataSource.sort = this.sort;
 
-        this.isLoading = false;
-      });
-    }, 1000);
+          this.isLoading = false;
+        });
+      }, 1000);
+    }
   }
-
 }

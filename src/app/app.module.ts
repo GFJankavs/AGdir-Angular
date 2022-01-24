@@ -11,14 +11,12 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
-import { TableComponent } from './components/table/table.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    TableComponent
   ],
   imports: [
     BrowserModule,

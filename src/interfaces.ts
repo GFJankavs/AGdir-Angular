@@ -50,7 +50,7 @@ export type Weather = {
 }
 };
 
-interface WeatherJSON {
+interface WeatherAPI {
   type: string;
   geometry: {
     type: string;
@@ -90,24 +90,10 @@ interface WeatherJSON {
   }
 }
 
-export interface InfoType {
-  coordinates: {
-    lat: string,
-    lon: string,
-  },
-  data: MatTableDataSource<Weather>;
-}
-
-interface WeatherDataSingle {
-  time: string,
-  air_temperature: string,
-  relative_humidity: string,
-}
-
 export type WeatherDataType = {
   time: string,
   air_temperature: string,
   relative_humidity: string
 };
 
-export default WeatherJSON;
+export default WeatherAPI;
