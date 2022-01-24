@@ -16,6 +16,7 @@ import {WeatherService} from "./weather.service";
 export class WeatherForecastComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, {static: false})
+
   set paginator(value: MatPaginator) {
     if (this.dataSource) {
       this.dataSource.paginator = value;
@@ -23,8 +24,8 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
   }
 
   dataSource: MatTableDataSource<WeatherDataType>;
-  weatherSubscription: Subscription;
-  locationSubscription: Subscription;
+  weatherSubscription: Subscription = Subscription.EMPTY;
+  locationSubscription: Subscription = Subscription.EMPTY
   isLoading: boolean = false;
 
   weatherForm = new FormGroup({
@@ -72,9 +73,6 @@ export class WeatherForecastComponent implements OnInit, OnDestroy {
 
   getWeatherForecast(): void {
     if (this.weatherForm.value.latitude && this.weatherForm.value.longitude) {
-      if (this.weatherForm.get('longitude')?.hasError === undefined) {
-        console.log('There is an error');
-      }
       this.isLoading = true;
       const lat = this.weatherForm.value.latitude;
       const lon = this.weatherForm.value.longitude;

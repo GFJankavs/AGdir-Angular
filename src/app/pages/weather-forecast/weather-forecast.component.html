@@ -51,7 +51,7 @@
           <h2 *ngIf="!dataSource.data.length && !isLoading">Make a request!</h2>
           <mat-spinner [class]="isLoading ? 'table__spinner spinner--visible' : 'table__spinner spinner--hidden'"
                        [diameter]="40"></mat-spinner>
-          <div *ngIf="dataSource.data.length" class="mat-elevation-z8 table__container">
+          <div *ngIf="dataSource" [class]="dataSource.data.length ? 'mat-elevation-z8 table__container' : 'mat-elevation-z8 table__container--empty'">
             <div class="table__wrapper">
               <table [dataSource]="dataSource" mat-table matSort>
                 <ng-container matColumnDef="time" position>

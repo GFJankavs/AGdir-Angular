@@ -75,6 +75,10 @@
   overflow: auto;
 }
 
+.table__container--empty {
+  visibility: hidden;
+}
+
 .spinner__container {
   position: absolute;
   top: 0;
